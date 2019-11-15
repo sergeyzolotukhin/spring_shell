@@ -31,11 +31,14 @@ distributions {
     main {
         baseName = 'tool'
         contents {
-            from 'src/cmd'
             from bootJar
             into "../../../.bin"
         }
     }
+}
+
+clean {
+    delete += "$rootDir/.bin"
 }
 
 dependencies {
