@@ -27,23 +27,16 @@ bootJar {
 }
 
 distributions {
+    //noinspection GroovyAssignabilityCheck
     main {
         baseName = 'tool'
         contents {
             from 'src/cmd'
             from bootJar
+            into "../../../.bin"
         }
     }
 }
-
-task copy2bin(type: Copy) {
-    group = "distribution"
-
-    from file("$buildDir/install/tool")
-    into file("$rootDir/.bin")
-}
-
-copy2bin.dependsOn(installDist)
 
 dependencies {
     implementation 'org.springframework.shell:spring-shell-starter:2.0.1.RELEASE'
