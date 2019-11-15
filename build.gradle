@@ -2,11 +2,8 @@ plugins {
     id 'org.springframework.boot' version '2.2.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
+    id 'distribution'
 }
-
-group = 'ua.in.sz.shell'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
 
 configurations {
     developmentOnly
@@ -21,6 +18,32 @@ configurations {
 repositories {
     mavenCentral()
 }
+
+bootJar {
+    archiveFileName = 'tool.jar'
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+distributions {
+    main {
+        baseName = 'tool'
+        contents {
+            from 'src/cmd'
+            from bootJar
+        }
+    }
+}
+
+task copy2bin(type: Copy) {
+    group = "distribution"
+
+    from file("$buildDir/install/tool")
+    into file("$rootDir/.bin")
+}
+
+copy2bin.dependsOn(installDist)
 
 dependencies {
     implementation 'org.springframework.shell:spring-shell-starter:2.0.1.RELEASE'
