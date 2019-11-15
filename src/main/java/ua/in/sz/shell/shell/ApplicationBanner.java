@@ -13,7 +13,10 @@ import java.io.PrintStream;
 public class ApplicationBanner implements Banner {
 	@Override
 	public void printBanner(Environment env, Class<?> sourceClass, PrintStream out) {
-		out.println(AnsiOutput.toString(AnsiColor.GREEN, "tools", AnsiColor.DEFAULT, " ", AnsiStyle.FAINT, "1.0"));
+		out.println(AnsiOutput.toString(
+				AnsiColor.GREEN, "tools",
+				AnsiColor.DEFAULT, " ",
+				AnsiStyle.FAINT, "1.0"));
 		out.println();
 	}
 }
