@@ -8,8 +8,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ShellComponent
 public class UserCommand {
+
+	private List<String> users = new ArrayList<>();
 
 	private final LineReader lineReader;
 	private final Terminal terminal;
@@ -22,17 +27,41 @@ public class UserCommand {
 
 	@ShellMethod("Add user.")
 	public String add() {
-		print(red("Hi"));
-
 		String name = lineReader.readLine(red(String.format("name [%s]:", "root")));
 		String password = lineReader.readLine(String.format("password [%s]:", "root"));
 
-		return String.format("create user [%s/%s]", name, password);
+		users.add(name);
+
+		return String.format("add user [%s/%s]", name, password);
+	}
+
+	@ShellMethod("Remove user.")
+	public String remove() {
+		String name = lineReader.readLine(red(String.format("name [%s]:", "root")));
+
+		users.remove(name);
+
+		return String.format("removed user [%s]", name);
+	}
+
+	@ShellMethod("list user.")
+	public void list() {
+		print(red(String.format("Users (%d):", users.size())));
+		for (String user : users) {
+			print(blue(user));
+		}
 	}
 
 	private String red(String message) {
 		AttributedStringBuilder attr = new AttributedStringBuilder();
 		AttributedStyle fg = AttributedStyle.DEFAULT.foreground(AttributedStyle.RED);
+
+		return attr.append(message, fg).toAnsi();
+	}
+
+	private String blue(String message) {
+		AttributedStringBuilder attr = new AttributedStringBuilder();
+		AttributedStyle fg = AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE);
 
 		return attr.append(message, fg).toAnsi();
 	}
