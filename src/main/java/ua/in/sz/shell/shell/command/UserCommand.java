@@ -5,8 +5,10 @@ import org.jline.terminal.Terminal;
 import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellMethodAvailability;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class UserCommand {
 	}
 
 	@ShellMethod("Remove user.")
+	@ShellMethodAvailability("removeAvailability")
 	public String remove() {
 		String name = lineReader.readLine(red(String.format("name [%s]:", "root")));
 
@@ -50,6 +53,14 @@ public class UserCommand {
 		for (String user : users) {
 			print(blue(user));
 		}
+	}
+
+	// ================================================================================================================
+	// security
+	// ================================================================================================================
+
+	private Availability removeAvailability() {
+		return users.size() > 0 ? Availability.available() : Availability.unavailable("No user");
 	}
 
 	// ================================================================================================================
