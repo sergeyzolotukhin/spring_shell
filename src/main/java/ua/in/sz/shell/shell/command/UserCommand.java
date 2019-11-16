@@ -52,6 +52,10 @@ public class UserCommand {
 		}
 	}
 
+	// ================================================================================================================
+	// private methods
+	// ================================================================================================================
+
 	private String red(String message) {
 		AttributedStringBuilder attr = new AttributedStringBuilder();
 		AttributedStyle fg = AttributedStyle.DEFAULT.foreground(AttributedStyle.RED);
